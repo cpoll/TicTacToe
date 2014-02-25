@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en"> 
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="author" content="Cristian Poll & Lance Blais">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" media="screen" href="bootstrap/css/bootstrap.min.css">
+	    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/base/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="css/lobby.css" >
+		<link rel="stylesheet" type="text/css" href="css/style.css" >
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.js"></script>
+		<script src="bootstrap/js/bootstrap.min.js"></script>
+		<script src="js/functions.js"></script>
+
+		<title>Lobby</title>
+	</head>
+	
+	<body>
+		<script>writeNav();</script>	
+		<div id="lobby" class="container">
+			<div id="new_world" ><input type="text" id="world_name" ><img id="join_world" src="images/plus.png"></div>
+			<div id="world_list" ></div>
+		</div>
+	
+	<script>
+
+		$(document).ready(function(){
+			/* do it now, then on regular interval */
+			update();
+			
+			var syncTime = 5 * 1000;
+			interval = setInterval(function(){
+				update();
+			}, syncTime);
+		});
+		
+
+		function update(){
+			var request = $.ajax({
+				url: 'php/worlds.php',
+				type: 'GET',
+			});
+
+			request.done(function(json_data){
+				try {	
+					var data = $.parseJSON(json_data);
+					var list = '';
+					$.each(data, function(index, world){
+						list += '<div id="' + world + '" class="world_list_item"><p>' + world + '</p></div>'; 
+					});
+					$('#world_list').html(list);
+					$.each(data, function(index, world){
+						$('#' + world).click(function(){
+							window.location = 'world.html#' + world;
+						});
+					});
+				} catch (err) {
+					console.log('Exception: ' + err.message);
+				}
+			});
+
+			request.fail(function(jqXHR, error){
+				console.log('Couldn\'t update world list: ' + error);
+			});
+
+		}
+
+		$('#join_world').click(function(){
+			var world = $('#world_name').val();
+			if (world == ""){
+				return;
+			}
+			window.location = 'world.html#' + world;
+		});
+
+	</script>
+	</body>
+</html>
+

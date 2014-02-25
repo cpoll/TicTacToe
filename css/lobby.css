@@ -1,0 +1,38 @@
+
+#lobby {
+}
+
+#new_world {
+}
+
+#world_name {
+	height: 50px;
+	width:50%;
+	border-radius:10px;
+	background-color:#000;
+	margin-top:10px;
+	color:#CCC;
+	font-size: X-Large;
+}
+
+#join_world {
+	width:70px;
+}
+
+#world_list{
+	margin-top:20px;
+}
+
+.world_list_item {
+	height:75px;
+	border: 3px solid #0F0;
+	border-radius: 15px;
+	text-align:center;
+	margin-top:5px;
+}
+
+.world_list_item > p {
+	margin-top: 20px;
+	font-size: X-Large;
+	color:#CCC;
+}

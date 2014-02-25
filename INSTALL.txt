@@ -1,0 +1,33 @@
+Authors:
+Cristian Poll
+Lance Blais
+
+
+Tested on Nexus7 Chrome and CSLab Firefox.
+
+
+
+Setup:
+------
+
+- Add your session and MongoDB data to php/config.php.
+
+- Sonar currently hard-codes some GPS values to make it easier to test.
+	If you do not desire this, set the debug flag "this.debug" in js/sonar.js (line 23) to false.
+
+
+Features:
+---------
+
+- Sonar: 
+	Shows position of other users, relative to your position.
+	Uses:
+		Device GPS.
+		Device Orientation (compass and portrait/landscape data).
+		GPS values stored in DB.
+
+- Game:
+	Implements touch events and physics.
+	Flick the images and they'll slide across the screen (using our proprietary physics engine).
+
+- Bootstrap is used for all pages.

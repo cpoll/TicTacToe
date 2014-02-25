@@ -1,0 +1,66 @@
+#
+# SERVER COMMANDS
+#
+
+TYPE: GET
+URL: gps.php
+NOTE: Returns position of all users except self who have been active in the last 5 minutes
+RET: JSON - [
+				{"latitude" : FLOAT, "longitude" : FLOAT},
+				{"latitude" : FLOAT, "longitude" : FLOAT},
+				...
+				{"latitude" : FLOAT, "longitude" : FLOAT}
+			]
+
+
+TYPE: POST
+URL: gps.php
+ARGS: latitude=FLOAT&longitude=FLOAT
+RET: Nothing.
+
+TYPE: GET
+URL: worlds.php
+RET: JSON - [ STRING, STRING, ... , STRING ]
+
+TYPE: GET
+URL: worlds.php?world=worldName
+NOTE: Some items may not appear
+RET: JSON - [
+				{ "image_id" : "x1", "left" : FLOAT, "top" : FLOAT},
+				{ "image_id" : "x2", "left" : FLOAT, "top" : FLOAT},
+				{ "image_id" : "x3", "left" : FLOAT, "top" : FLOAT},
+				{ "image_id" : "x4", "left" : FLOAT, "top" : FLOAT},
+				{ "image_id" : "x5", "left" : FLOAT, "top" : FLOAT},
+				{ "image_id" : "o1", "left" : FLOAT, "top" : FLOAT},
+				{ "image_id" : "o2", "left" : FLOAT, "top" : FLOAT},
+				{ "image_id" : "o3", "left" : FLOAT, "top" : FLOAT},
+				{ "image_id" : "o4", "left" : FLOAT, "top" : FLOAT},
+				{ "image_id" : "o5", "left" : FLOAT, "top" : FLOAT}
+			]
+
+		
+TYPE: POST
+URL: world.php
+ARGS: world=STR&imag_id=STR&left=FLOAT&top=FLOAT
+NOTE: Creates world if doesn't exist.
+RET: Nothing.
+
+
+#
+# DB Info
+#
+
+GPS Collection
+--------------
+id->  SHA256(PHP_SESSID)
+latitude-> FLOAT
+longitude-> FLOAT
+last_active-> UNIX_TS
+
+
+Worlds Collection
+-----------------
+world-> STRING
+image_id-> STRING
+left-> FLOAT
+top-> FLOAT

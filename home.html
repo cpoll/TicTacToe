@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en"> 
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="author" content="Cristian Poll & Lance Blais">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" media="screen" href="bootstrap/css/bootstrap.min.css">
+	    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/base/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="css/home.css" >
+		<link rel="stylesheet" type="text/css" href="css/style.css" >
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.js"></script>
+		<script src="bootstrap/js/bootstrap.min.js"></script>
+		<script src="js/functions.js"></script>
+
+		<title>Home</title>
+	</head>
+	
+	<body>	
+		<script>writeNav();</script>	
+		<div class="container-fluid">
+			<div class="row-fluid">
+				<div class="span2">
+					<!--Sidebar content-->
+					<div class="well sidebar-nav">
+						<ul class="nav nav-list">
+							<li><a id="nav_features" href="#">Features</a></li>
+							<li><a id="nav_howto" href="#">How-to</a></li>
+							<li><a id="nav_about" href="#">About</a></li>
+            			</ul>
+					</div><!--/.well -->
+				</div>
+				<div class="span10">
+					<!--Body content-->
+					<div id="content"></div>
+
+					<div id="data_features" class="invisible">
+						<h1>Features</h1>
+						<p>
+							<h3>Touch</h3>
+							<ul>
+								<li>Objects are controlled by touch.</li>
+								<li>A strong flick causes objects to slide along the screen using our proprietary physics engine.</li>
+							</ul>
+						</p>
+						<p>
+							<h3>Geolocation + Orientation</h3>
+							<ul>
+								<li>A sonar styled GPS-locator lets you find other players based on GPS location</li>
+								<li>The sonar rotates based on device orientation (compass bearings)</li>
+							</ul>
+						</p>
+						<p>
+							<h3>Responsive Interface</h3>
+							<ul><li>Powered by Twitter Bootstrap.</li></ul>
+						</p>
+					</div>
+					
+					<div id="data_howto" class="invisible">
+						<h1>How-to</h1>
+						<p>Coming soon...</p>
+					</div>
+					
+					<div id="data_about" class="invisible">
+						<h1>About</h1>
+						<p>Made by Lance Blais and Cristian Poll for CSC309</p>
+					</div>
+
+
+				</div>
+			</div>
+		</div>	
+		<script>
+			$(document).ready(function(){
+				$('#nav_features').click();
+			});
+
+			$('#nav_features').click(function(){
+				$('#content').html($('#data_features').html());
+			});	
+
+			$('#nav_howto').click(function(){
+				$('#content').html($('#data_howto').html());
+			});	
+
+			$('#nav_about').click(function(){
+				$('#content').html($('#data_about').html());
+			});	
+		</script>
+	</body>
+</html>
+

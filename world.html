@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en"> 
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="author" content="Cristian Poll & Lance Blais">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" media="screen" href="bootstrap/css/bootstrap.min.css">
+	    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/base/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="css/world.css" >
+		<link rel="stylesheet" type="text/css" href="css/style.css" >
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.js"></script>
+		<script src="js/jquery.ui.touch-punch.min.js"></script>
+		<script src="bootstrap/js/bootstrap.min.js"></script>
+		<script src="js/functions.js"></script>
+		<script src="js/physics.js"></script>
+
+		<title></title>
+	</head>
+	
+	<body>	
+		<script>writeNav();</script>
+		<div id="world" class="container">
+				<img id="x1" src="images/x.gif" style="z-index:2;" class="draggable" />
+				<img id="x2" src="images/x.gif" style="z-index:2;" class="draggable" />
+				<img id="x3" src="images/x.gif" style="z-index:2;" class="draggable" />
+				<img id="x4" src="images/x.gif" style="z-index:2;" class="draggable" />
+				<img id="x5" src="images/x.gif" style="z-index:2;" class="draggable" />
+				<img id="o1" src="images/o.gif" style="z-index:2;" class="draggable" />
+				<img id="o2" src="images/o.gif" style="z-index:2;" class="draggable" />
+				<img id="o3" src="images/o.gif" style="z-index:2;" class="draggable" />
+				<img id="o4" src="images/o.gif" style="z-index:2;" class="draggable" />
+				<img id="o5" src="images/o.gif" style="z-index:2;" class="draggable" />
+				<img id="tttboard" src="images/tictactoe.gif" style="z-index:1;" class="draggable" />
+		</div>
+
+	<script>
+		var lock = null;
+		var x = 0;			
+
+		$(document).ready(function(){
+			// default
+			if (location.hash == '' || location.hash == '#'){
+				window.location = 'world.html#default';
+			}
+
+			document.title = 'World:' + location.hash.substring(1);
+
+			/* Handle physics of throwing objects around */
+			var mm = new Movement_manager($('#world'));
+
+			$('#world img').draggable({containment: "#world"}); 
+			$('#world img').on('dragstart', function(event, ui) { lock=event.target.id; x=0; mm.onDragStart(event); push(event.target.id); });
+			$('#world img').on('drag', function(event, ui) { x++; if (x % 10 == 0){ push(event.target.id) } mm.onDrag(event);});
+			$('#world img').on('dragstop' , function(event, ui) { mm.onDragStop(event); push(event.target.id); });
+				
+			$('#world').height($('#world').width() / 2); 
+			$(window).resize(function() {
+				$('#world').height($('#world').width() / 2);
+			});
+		
+			/* do it now and on a regular interval */
+			pull();
+	
+			var pull_interval_time = 1000/15;
+			pull_interval = setInterval(function(){
+				pull();
+			}, pull_interval_time);
+		});
+	
+		function pull(){
+			var request = $.ajax({
+				url: 'php/worlds.php?world=' + location.hash.substring(1),
+				type: 'GET',
+			});
+
+			request.done(function(jsonData){
+				try {
+					var data = $.parseJSON(jsonData);
+					$.each(data, function(index, obj){
+						if (obj['image_id'] != lock) { 
+							$('#' + obj.image_id).css({
+								left: $('#world').offset().left + ($('#world').width() * obj.left), 
+								top: $('#world').offset().top + ($('#world').height() * obj.top)
+							});
+						}
+					});
+
+				} catch (err) {
+					console.log('Error occured:' + err.message);
+				}
+			});
+
+			request.fail(function(jqXHR, error){
+				console.log('GET failed: ' + error);
+			});
+	
+		}
+	
+		function push(image_id){
+			var request = $.ajax({
+				url: 'php/worlds.php',
+				type: 'POST',
+				data: { 
+					'world' : location.hash.substring(1),
+					'image_id': image_id,
+					'top' : ($('#' + image_id).position().top - $('#world').position().top) / $('#world').height(),
+					'left' : ($('#' + image_id).position().left - $('#world').position().left) / $('#world').width(),
+				}
+			});
+			
+			request.fail(function(jqXHR, error){
+				console.log('POST failed: ' + error);
+			});
+		}
+	</script>
+	</body>
+</html>
+

@@ -1,0 +1,22 @@
+
+#content {
+	color: #0D0;
+	font-size: X-Large;
+}
+
+#content h3{
+	text-align:left;
+	margin-top:20px;
+	margin-bottom:-5px;
+}
+
+#content li{
+	text-align:left;
+	color: #0C0;
+	margin: 5px;
+}
+
+.invisible {
+	display:none;
+}
+
